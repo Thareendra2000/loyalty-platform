@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './context';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import EarnPoints from './pages/EarnPoints';
+import RedeemPoints from './pages/RedeemPoints';
+import History from './pages/History';
 
 // Protected Route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -52,6 +55,30 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/earn" 
+            element={
+              <ProtectedRoute>
+                <EarnPoints />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/redeem" 
+            element={
+              <ProtectedRoute>
+                <RedeemPoints />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/history" 
+            element={
+              <ProtectedRoute>
+                <History />
               </ProtectedRoute>
             } 
           />

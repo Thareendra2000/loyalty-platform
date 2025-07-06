@@ -20,7 +20,7 @@ export interface LoginResponse {
 }
 
 export interface EarnPointsRequest {
-  amount: number;
+  points: number;
   description?: string;
 }
 

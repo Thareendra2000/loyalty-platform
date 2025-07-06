@@ -5,7 +5,7 @@ import type { EarnPointsRequest } from '../api/loyaltyApi';
 
 const EarnPoints: React.FC = () => {
   const [formData, setFormData] = useState<EarnPointsRequest>({
-    amount: 0,
+    points: 0,
     description: '',
   });
   const [loading, setLoading] = useState(false);
@@ -22,8 +22,8 @@ const EarnPoints: React.FC = () => {
 
     try {
       await earnPoints(formData);
-      setSuccess(`Successfully earned ${formData.amount} points!`);
-      setFormData({ amount: 0, description: '' });
+      setSuccess(`Successfully earned ${formData.points} points!`);
+      setFormData({ points: 0, description: '' });
       
       // Redirect to dashboard after 2 seconds
       setTimeout(() => {
@@ -42,7 +42,7 @@ const EarnPoints: React.FC = () => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'amount' ? parseFloat(value) || 0 : value
+      [name]: name === 'points' ? parseFloat(value) || 0 : value
     }));
   };
 
@@ -57,7 +57,7 @@ const EarnPoints: React.FC = () => {
 
   const handlePredefinedActivity = (activity: { name: string; points: number }) => {
     setFormData({
-      amount: activity.points,
+      points: activity.points,
       description: activity.name
     });
   };
@@ -109,18 +109,18 @@ const EarnPoints: React.FC = () => {
           <div className="px-6 py-4">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="points" className="block text-sm font-medium text-gray-700">
                   Points Amount
                 </label>
                 <input
                   type="number"
-                  id="amount"
-                  name="amount"
+                  id="points"
+                  name="points"
                   min="1"
                   max="1000"
                   required
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  value={formData.amount || ''}
+                  value={formData.points || ''}
                   onChange={handleChange}
                 />
               </div>

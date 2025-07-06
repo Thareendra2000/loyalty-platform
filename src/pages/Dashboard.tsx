@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context';
 import { getBalance } from '../api/loyaltyApi';
 
@@ -148,8 +149,8 @@ const Dashboard: React.FC = () => {
         </div>
         <div className="px-6 py-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <a
-              href="/earn"
+            <Link
+              to="/earn"
               className="bg-blue-50 hover:bg-blue-100 p-4 rounded-lg border border-blue-200 transition-colors"
             >
               <div className="flex items-center">
@@ -161,10 +162,10 @@ const Dashboard: React.FC = () => {
                   <p className="text-sm text-gray-600">Complete activities to earn rewards</p>
                 </div>
               </div>
-            </a>
+            </Link>
 
-            <a
-              href="/redeem"
+            <Link
+              to="/redeem"
               className="bg-green-50 hover:bg-green-100 p-4 rounded-lg border border-green-200 transition-colors"
             >
               <div className="flex items-center">
@@ -176,10 +177,10 @@ const Dashboard: React.FC = () => {
                   <p className="text-sm text-gray-600">Use your points for rewards</p>
                 </div>
               </div>
-            </a>
+            </Link>
 
-            <a
-              href="/history"
+            <Link
+              to="/history"
               className="bg-purple-50 hover:bg-purple-100 p-4 rounded-lg border border-purple-200 transition-colors"
             >
               <div className="flex items-center">
@@ -191,7 +192,7 @@ const Dashboard: React.FC = () => {
                   <p className="text-sm text-gray-600">Check your transaction history</p>
                 </div>
               </div>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
