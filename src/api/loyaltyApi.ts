@@ -32,6 +32,7 @@ export interface RedeemPointsRequest {
 }
 
 export interface BalanceResponse {
+  points: number;
   balance: number;
   loyaltyAccountId: string;
 }

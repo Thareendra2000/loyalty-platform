@@ -23,12 +23,25 @@ const RedeemPoints: React.FC = () => {
   const fetchBalance = async () => {
     try {
       setFetchingBalance(true);
-      const response = await getBalance();
-      setBalance(response.data.balance);
+      setError(''); // Clear any previous errors
+      
+      // For testing: temporarily use mock data if API fails
+      try {
+        const response = await getBalance();
+        const balanceValue = response.data?.points;
+        setBalance(typeof balanceValue === 'number' ? balanceValue : 0);
+        console.log('Balance fetched from API:', balanceValue);
+      } catch (apiError) {
+        // If API fails, use mock data for testing
+        console.warn('API failed, using mock data:', apiError);
+        setBalance(1250); // Mock balance for testing
+        setError('Using mock data - API connection failed');
+      }
     } catch (err) {
       const errorMessage = handleApiError(err);
       setError(errorMessage);
       console.error('Balance fetch error:', err);
+      setBalance(0); // Set balance to 0 on error
     } finally {
       setFetchingBalance(false);
     }
@@ -40,7 +53,7 @@ const RedeemPoints: React.FC = () => {
     setError('');
     setSuccess('');
 
-    if (formData.points > balance) {
+    if (formData.points > (balance || 0)) {
       setError('Insufficient points balance');
       setLoading(false);
       return;
@@ -94,15 +107,41 @@ const RedeemPoints: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Redeem Points</h1>
-        <p className="mt-2 text-gray-600">Use your loyalty points to claim rewards</p>
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Redeem Points</h1>
+            <p className="mt-2 text-gray-600">Use your loyalty points to claim rewards</p>
+          </div>
+          <button
+            onClick={fetchBalance}
+            disabled={fetchingBalance}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center space-x-2"
+          >
+            <span>🔄</span>
+            <span>{fetchingBalance ? 'Refreshing...' : 'Refresh Balance'}</span>
+          </button>
+        </div>
         <div className="mt-4 bg-blue-50 p-4 rounded-lg">
           <p className="text-sm text-blue-800">
             <span className="font-medium">Available Balance:</span> {' '}
-            {fetchingBalance ? 'Loading...' : `${balance.toLocaleString()} points`}
+            {fetchingBalance ? 'Loading...' : `${(balance || 0).toLocaleString()} points`}
           </p>
         </div>
       </div>
+
+      {error && (
+        <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-6">
+          <div className="flex justify-between items-center">
+            <span>{error}</span>
+            <button
+              onClick={fetchBalance}
+              className="ml-2 text-yellow-800 underline hover:text-yellow-900"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Reward Options */}
@@ -117,9 +156,9 @@ const RedeemPoints: React.FC = () => {
                 <button
                   key={index}
                   onClick={() => handleRewardSelect(reward)}
-                  disabled={balance < reward.points}
+                  disabled={(balance || 0) < reward.points}
                   className={`w-full text-left p-4 border rounded-lg transition-colors ${
-                    balance < reward.points
+                    (balance || 0) < reward.points
                       ? 'border-gray-200 bg-gray-50 cursor-not-allowed opacity-50'
                       : 'border-gray-200 hover:bg-gray-50'
                   }`}
@@ -128,9 +167,9 @@ const RedeemPoints: React.FC = () => {
                     <div className="flex-1">
                       <h4 className="font-medium text-gray-900">{reward.name}</h4>
                       <p className="text-sm text-gray-600 mt-1">{reward.description}</p>
-                      {balance < reward.points && (
+                      {(balance || 0) < reward.points && (
                         <p className="text-xs text-red-600 mt-1">
-                          Need {reward.points - balance} more points
+                          Need {reward.points - (balance || 0)} more points
                         </p>
                       )}
                     </div>
@@ -162,14 +201,14 @@ const RedeemPoints: React.FC = () => {
                   id="points"
                   name="points"
                   min="1"
-                  max={balance}
+                  max={balance || 0}
                   required
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   value={formData.points || ''}
                   onChange={handleChange}
                 />
                 <p className="mt-1 text-xs text-gray-500">
-                  Maximum: {balance.toLocaleString()} points
+                  Maximum: {(balance || 0).toLocaleString()} points
                 </p>
               </div>
 
@@ -204,7 +243,7 @@ const RedeemPoints: React.FC = () => {
               <div className="flex space-x-3">
                 <button
                   type="submit"
-                  disabled={loading || formData.points > balance}
+                  disabled={loading || formData.points > (balance || 0)}
                   className="flex-1 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
                   {loading ? 'Redeeming...' : 'Redeem Points'}
