@@ -13,6 +13,8 @@ export interface LoginCredentials {
 export interface LoginResponse {
   token: string;
   user: {
+    lastName: string;
+    firstName: string;
     id: string;
     name: string;
     email: string;

@@ -32,8 +32,16 @@ const Login: React.FC = () => {
       const response = await loginUser(credentials);
       const { token, user } = response.data;
       
+      // Transform user object to match User interface
+      const transformedUser = {
+        id: user.id,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email
+      };
+      
       // Store auth data using context
-      login(user, token);
+      login(transformedUser, token);
       
       // Redirect to dashboard
       navigate('/dashboard');

@@ -57,7 +57,7 @@ const Navbar: React.FC = () => {
             </Link>
             
             <div className="flex items-center space-x-4 ml-6">
-              <span className="text-sm">Welcome, {user?.name || 'User'}</span>
+              <span className="text-sm">Welcome, {user?.firstName || 'User'}</span>
               <button
                 onClick={handleLogout}
                 className="bg-red-500 hover:bg-red-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
