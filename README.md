@@ -182,36 +182,6 @@ npm run build
 aws s3 sync dist/ s3://your-bucket-name --delete
 ```
 
-## Testing
-
-### Run Tests
-```bash
-npm test
-```
-
-### Test Coverage
-```bash
-npm run test:coverage
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License.
-
-## Support
-
-For support, please contact the development team or open an issue in the repository.
-
----
-
 ## Backend Integration
 
 This frontend is designed to work with the Go backend server. Make sure to:
