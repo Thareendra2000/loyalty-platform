@@ -125,7 +125,7 @@ export const earnPoints = async (data: EarnPointsRequest): Promise<AxiosResponse
  */
 export const redeemPoints = async (data: RedeemPointsRequest): Promise<AxiosResponse<ApiResponse>> => {
   try {
-    const response = await loyaltyApi.post('/redeem', data);
+    const response = await loyaltyApi.post('loyalty/redeem', data);
     return response;
   } catch (error) {
     console.error('Redeem points API error:', error);
