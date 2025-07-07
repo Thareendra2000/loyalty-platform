@@ -18,7 +18,7 @@ const Dashboard: React.FC = () => {
       setLoading(true);
       const response = await getBalance();
       // Ensure balance is a number, default to 0 if undefined or invalid
-      const balanceValue = response.data?.balance;
+      const balanceValue = response.data?.points;
       setBalance(typeof balanceValue === 'number' ? balanceValue : 0);
       setError(''); // Clear any previous errors
     } catch (err) {
